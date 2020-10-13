@@ -16,7 +16,7 @@ require 'sidebar.php';
 <noscript> <!-- Show a notification if the user has disabled javascript -->
 <div class="notification error png_bg">
 <div>
-Javascript is disabled or is not supported by your browser. 
+Javascript is disabled and is not supported by your browser. 
 Please <a href="http://browsehappy.com/" title="Upgrade to a better browser">
 upgrade</a> your browser or <a 
 href="http://www.google.com/support/bin/answer.py?answer=23852"
