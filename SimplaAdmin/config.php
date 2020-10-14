@@ -12,6 +12,6 @@ $siteURL ="http://localhost/training/taskmy/";
 $sitename = "MYSQL TASK1";
 $con= mysqli_connect("localhost", "root", "", "template");
 if ($con->connect_error) {
-    die("Not Connected".$con->connect_error);
+    die("Not Connected properly".$con->connect_error);
 }
 ?>

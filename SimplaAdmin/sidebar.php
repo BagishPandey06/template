@@ -13,8 +13,8 @@
  */
     $filename = basename($_SERVER['REQUEST_URI']);
     echo $filename;
-    $productmenu = array('product.php','mp.php','cat.php','tag.php');
-    $usermenu = array('au.php','mu.php');
+    $productmenu = array('mp.php','cat.php','tag.php');
+    $usermenu = array('mu.php');
 ?>
             
             <h1 id="sidebar-title"><a href="#">Admin</a></h1>
@@ -46,15 +46,13 @@
                 </li>
                 
                 <li> 
-<a href="#" class="nav-top-item<?php if (in_array($filename, $productmenu) ) : ?>
+<a href="#" class="nav-top-item <?php if (in_array($filename, $productmenu) ) : ?>
 current
-<?php endif ; ?>"> <!-- Add the class "current" to current menu item -->
+<?php endif ; ?>"> 
+<!-- Add the class "current" to current menu item -->
                     Products
                     </a>
                     <ul>
-<li><a <?php if($filename == "product.php" ) :?>class="current"
-<?php endif; ?>
-    href="product.php">Add Product</a></li>
                         <li><a <?php if($filename == " mp.php " ) :?>
                         class="current"<?php endif;?>
                         href="mp.php">Manage Product</a></li>
@@ -76,10 +74,7 @@ current
                         Users
                     </a>
                     <ul>
-                        <li><a <?php if($filename == " au.php " ) :?>
-                        class="current"<?php endif; ?>
-                        href=" au.php ">Add User</a></li>
-                        <li><a <?php if($filename == " mu.php " ) :?>
+                        <li><a <?php if($filename == "mu.php" ) :?>
                         class="current"<?php endif; ?>
                         href="mu.php">Manage User</a></li>
                     </ul>
