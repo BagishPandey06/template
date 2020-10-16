@@ -12,7 +12,7 @@ $error=array();
 $message='';
 require 'config.php';
 $id=$_REQUEST['id'];
-$sql = "DELETE FROM categorie WHERE `id`=$id";
+$sql = "DELETE FROM categorie WHERE `catname`=$id";
 if ($con->query($sql) === true) {
     $error=array('input'=>'form','message'=>'Data Deleted Succesfully'); 
     header('Location: cat.php');

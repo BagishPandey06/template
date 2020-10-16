@@ -22,8 +22,8 @@ while ($ab = $res->fetch_assoc()) {
                 $desc = $ab['descr'];
 }
 if (isset($_POST['submit'])) {
-    $file= $_FILES["file"]["name"]; 
-    $tempname = $_FILES["file"]["tmp_name"];     
+    $file= $_FILES["file"]["name"];
+    $tempname = $_FILES ["file"]["tmp_name"];    
     $folder = "productimg/".$file; 
     if (move_uploaded_file($tempname, $folder)) { 
         $error=array('input'=>'form','msg'=>'Image Successfully  Added'); 
@@ -35,24 +35,18 @@ if (isset($_POST['submit'])) {
     $price=isset($_POST['price'])?$_POST['price']:'';
     $cat=isset($_POST['cat'])?$_POST['cat']:'';
     $tagarr=isset($_POST['tags'])?$_POST['tags']:'';
-    $desc=isset($_POST['descr'])?$_POST['descr']:'';
     $tags="";
     foreach ($tagarr as $val) {
         $tags .=$val .",";
     }
-   
     $desc=isset($_POST['desc'])?$_POST['desc']:'';
     $sql ="UPDATE product SET`name`='$name',`img`='$img',`price`='$price',
-    `catid`='$cat',`tags`='$tags',`descr`='$desc'
-    WHERE `id`=$id"; 
+    `catid`='$cat',`tags`='$tags',`descr`='$desc' WHERE `id`='$id'"; 
     if ($con->query($sql) === true) {
         echo '<script>alert("product updated succesfully!!");</script>';
-        echo '<script>window.location="mp.php"</script>';
-        
-    } else {
-        // 
-        echo "ok";
-       
+        echo '<script>window.location="mp.php";</script>';
+    } else { 
+        echo $con->error;
     }
 }
         $error=array();
@@ -96,7 +90,7 @@ if (isset($_POST['submit'])) {
                 
             <div class="tab-content default-tab" id="tab1">               
                 <h2>ADD-PRODUCT</h2>
-   <form action="" method="POST" enctype="multipart/form-data">
+   <form action="" method="POST" enctype= multipart/form-data >
     <p>
   <label for="id">product id:<br><input type="text"name="id"
   value="<?php echo $id;?>"required>
@@ -112,7 +106,7 @@ value="<?php echo $name;?>"required>
      value="<?php echo $price;?>"required></label>
     </p>
     <p>
-<label for="img">product image:<br> <input type="file"name="file"required></label>
+<label for="img">product image:<br><input type="file" name="file" required></label>
     </p>
     <p>
     <label for="cat">Choose a categorie:</label>
@@ -123,7 +117,7 @@ value="<?php echo $name;?>"required>
                    $r=mysqli_query($con, $sql);
     while ($row=mysqli_fetch_array($r)) { ?>
                    
-                    <option value=" <?php echo $row["catname"];?>">
+                    <option value=" <?php echo $row["catid"];?>" required>
                     <?php echo $row["catname"];?></option>
                     <?php  
     }
@@ -137,7 +131,7 @@ value="<?php echo $name;?>"required>
                    $r=mysqli_query($con, $sql);
     while ($row=mysqli_fetch_array($r)) { ?>
                     <input type="checkbox" name="tags[]" value="
-                    <?php echo $row["tagname"];?>" />
+                    <?php echo $row["tagname"];?>"  />
                         <?php echo $row["tagname"];?>
                     <?php 
     }
@@ -146,7 +140,8 @@ value="<?php echo $name;?>"required>
 <p>
                                 <label>Description</label>
                                 <textarea class="text-input textarea wysiwyg" 
-                                id="textarea" name="desc" cols="79" rows="15"><?php echo $desc ;?>
+                                id="textarea" name="desc" cols="79" rows="15">
+                                <?php echo $desc;?>
                             </textarea>
                             </p>
     <p>

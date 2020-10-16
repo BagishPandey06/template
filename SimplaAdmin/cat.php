@@ -130,12 +130,12 @@ if (isset($_POST['submit'])) {
                         ?>
                             <tr>
                                 <!-- <td><input type="checkbox" /></td> -->
-                                <td><?php echo $row["id"];?></td>
+                                <td><?php echo $row["catid"];?></td>
                                 <td><?php echo $row["catname"];?></td>
                                 <td>
                                     <!-- Icons -->
                                     <a href='delcat.php?id=
-                                    <?php echo $row["id"];?>' title="Delete">
+                                    <?php echo $row["catname"];?>' title="Delete">
                                         <img src="resources/images/icons/cross.png"
                                          alt="Delete" /></a> 
                                 </td>

@@ -215,7 +215,7 @@ VALUES ("'.$name.'", "'.$price.'", "'.$file.'","'.$cat.'","'.$tags.'","'.$desc.'
                    $r=mysqli_query($con, $sql);
     while ($row=mysqli_fetch_array($r)) { ?>
                    
-                    <option value=" <?php echo $row["catname"];?>">
+                    <option value=" <?php echo $row["catid"];?>">
                     <?php echo $row["catname"];?></option>
                     <?php  
     }
