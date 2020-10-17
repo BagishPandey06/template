@@ -1,3 +1,31 @@
+<?php 
+  // Database
+  require 'config.php';
+  
+  // Set session
+  session_start();
+  if(isset($_POST['records-limit'])){
+      $_SESSION['records-limit'] = $_POST['records-limit'];
+  }
+  
+  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
+  $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
+  $paginationStart = ($page - 1) * $limit;
+  $a="SELECT * FROM product LIMIT $paginationStart, $limit";
+  $r=mysqli_query($con, $a);
+  $product = mysqli_fetch_All($r);
+
+  // Get total records
+  $b="SELECT count(*) AS `id` FROM product";
+  $ra=mysqli_query($con, $b);
+  $pr= mysqli_fetch_All($ra);
+  $allRecrods = $pr[0]['id'];
+  // Calculate total pages
+  $totoalPages = ceil($allRecrods / $limit);
+  // Prev + Next
+  $prev = $page - 1;
+  $next = $page + 1;
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -391,10 +419,14 @@
                 </form>
                 <form action="" class="aa-show-form">
                   <label for="">Show</label>
-                  <select name="">
-                    <option value="1" selected="12">12</option>
-                    <option value="2">24</option>
-                    <option value="3">36</option>
+                  <select name="records-limit" id="records-limit">
+                  <?php foreach([2,4,6] as $limit) : ?>
+                    <option
+                        <?php if(isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>
+                        value="<?= $limit; ?>">
+                        <?= $limit; ?>
+                    </option>
+                    <?php endforeach; ?>
                   </select>
                 </form>
               </div>
@@ -403,7 +435,15 @@
                 <a id="list-catg" href="#"><span class="fa fa-list"></span></a>
               </div>
             </div>
- 
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#records-limit').change(function () {
+            $('form').submit();
+        })
+    });
+</script>
             <div class="aa-product-catg-body">
               <ul class="aa-product-catg">
               <?php
@@ -416,11 +456,20 @@
                * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
                * @link     http://localhost/training/taskmy/dashboard.php
                */ 
-              $id=$_REQUEST['id'];
-              echo $id; 
               require 'config.php';
-              $sql = "SELECT * FROM product";
-              $result = $con->query($sql);
+              if (isset($_REQUEST['cid'])==0) {
+                   $sql="SELECT * FROM product";
+                  } if (isset($_REQUEST['cid'])!=0) {
+                    $id=$_REQUEST['cid'];
+                    $sql="SELECT * FROM product WHERE `catid`=$id";
+                  } if (isset($_REQUEST['tid'])!=0) {
+                    $id=$_REQUEST['tid'];
+                    $sql="SELECT * FROM product WHERE `tags`=$id";
+                  } if (isset($_REQUEST['colid'])!=0) {
+                    $id=$_REQUEST['colid'];
+                    $sql="SELECT * FROM product WHERE `col_id`=$id";
+                  } 
+                $result = $con->query($sql);
               while ($row = $result->fetch_assoc()) {
                     ?>
                 <!-- start single product item -->
@@ -570,18 +619,20 @@
             <div class="aa-product-catg-pagination">
               <nav>
                 <ul class="pagination">
-                  <li>
-                    <a href="#" aria-label="Previous">
+                  <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
+                    <a class="page-link"
+                        href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">5</a></li>
-                  <li>
-                    <a href="#" aria-label="Next">
+                  <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
+                <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
+                    <a class="page-link" href="index.php?page=<?= $i; ?>"> <?= $i; ?> </a>
+                </li>
+                <?php endfor; ?>
+                  <li  class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+                    <a class="page-link"
+                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -601,7 +652,7 @@
               $r=mysqli_query($con, $sql);
             while ($row=mysqli_fetch_array($r)) { 
             ?>
-                <li><a href="#?id=<?php echo $row["catid"];?>">
+                <li><a href="product.php?cid=<?php echo $row["catid"];?>">
                 <?php echo $row["catname"];?></a></li>
 <?php
             };
@@ -617,7 +668,7 @@
                 $r=mysqli_query($con, $sql);
                 while ($row=mysqli_fetch_array($r)) { 
             ?>
-                <a href="#?id=<?php echo $row["id"];?>">
+                <a href="product.php?tid=<?php echo $row["id"];?>">
                 <?php echo $row["tagname"];?></a>
                 <?php
                 };
@@ -625,6 +676,8 @@
               </div>
             </div>
             <!-- single sidebar -->
+            
+           
             <div class="aa-sidebar-widget">
               <h3>Shop By Price</h3>              
               <!-- price range -->
@@ -644,18 +697,18 @@
             <div class="aa-sidebar-widget">
               <h3>Shop By Color</h3>
               <div class="aa-color-tag">
-                <a class="aa-color-green" href="#"></a>
-                <a class="aa-color-yellow" href="#"></a>
-                <a class="aa-color-pink" href="#"></a>
-                <a class="aa-color-purple" href="#"></a>
-                <a class="aa-color-blue" href="#"></a>
-                <a class="aa-color-orange" href="#"></a>
-                <a class="aa-color-gray" href="#"></a>
-                <a class="aa-color-black" href="#"></a>
-                <a class="aa-color-white" href="#"></a>
-                <a class="aa-color-cyan" href="#"></a>
-                <a class="aa-color-olive" href="#"></a>
-                <a class="aa-color-orchid" href="#"></a>
+                <?php  $sql='SELECT * FROM col';
+                   $r=mysqli_query($con, $sql);
+                while ($row=mysqli_fetch_array($r)) { ?>         
+                       <a href="product.php?colid=<?php echo $row["col_id"];?>">
+                       <input type = "checkbox" name="col" value="<?php echo $row['col_id'] ?>"
+                            style="height:15px;width:15px;">
+                            <input type = "color" value = "<?php echo 
+                            $row['colname']?>" style="border:none;"
+                            disabled></a>
+                    <?php 
+    }
+                        ?>
               </div>                            
             </div>
             <!-- single sidebar -->

@@ -63,6 +63,9 @@ current
                         <li><a <?php if($filename == " tag.php " ) :?>
                         class="current"<?php endif;
                             ?>href="tag.php">Tags</a></li>
+                             <li><a <?php if($filename == " col.php " ) :?>
+                             class="current"<?php endif;
+                        ?>href="col.php">colors</a></li>
                     </ul>
                 </li>
                 
