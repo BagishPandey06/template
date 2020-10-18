@@ -61,9 +61,10 @@ if (isset($_REQUEST['id'])) {
             "qty"=> $qty,
             "img" => $img
         );
+       
+        $_SESSION['e'][$id]= $item; 
         echo '<script>alert("Product Added ")</script>';
-        header("url=product.php");
-        $_SESSION['e'][$id]= $item;  
+        header("url=product.php"); 
     }
 }
 

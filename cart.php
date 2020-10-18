@@ -376,7 +376,7 @@ session_start();
                     ?>
                     <tbody>
                       <tr>
-                        <td><a class="remove" href="deleteproduct.php?delid=<?php echo $value['id']?>
+                        <td><a class="remove" href="delcrt.php?id=<?php echo $value['id']?>
                         "><fa class="fa fa-close"></fa></a></td>
                         <td><?php echo '<img src="SimplaAdmin/productimg/' . $value['img'] . '">' ?></td>
                         <td><a class="aa-cart-title" href="#"><?php echo 
