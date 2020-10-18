@@ -8,24 +8,35 @@ if (isset($_POST['records-limit'])) {
       $_SESSION['records-limit'] = $_POST['records-limit'];
 }
   
-  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
-  $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
+  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 2;
+ 
+  $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] :5;
+  
   $paginationStart = ($page - 1) * $limit;
+  
   $a="SELECT * FROM product LIMIT $paginationStart, $limit";
   $r=mysqli_query($con, $a);
   $s="select * from product";
 
   // Get total records
-  $b="SELECT count(*) AS `id` FROM product";
-  $ra=mysqli_query($con, $b);
-  $pr= mysqli_fetch_All($ra);
-  $allRecrods = $pr[0]['id'];
+  // $b="SELECT count(*) AS `id` FROM product";
+  // $ra=mysqli_query($con, $b);
+  // $pr= mysqli_fetch_All($ra);
+  $sql = $con->query("SELECT count(id) AS id FROM product");
+  // $pr= mysqli_fetch_All($sql);
+  $allRecrods =0;
+  while ($row=mysqli_fetch_array($sql)) {
+  $allRecrods ++;
+  }
+  
   // Calculate total pages
   $totoalPages =ceil($allRecrods / $limit);
   // Prev + Next
   $prev = $page - 1;
   $next = $page + 1;
+ // session_destroy();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -68,7 +79,15 @@ if (isset($_POST['records-limit'])) {
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<script>
+    $(document).ready(function () {
+        $('#records-limit').change(function () {
+            $('form').submit();
+        })
+    });
+</script>
   </head>
   <!-- !Important notice -->
   <!-- Only for product page body tag have to added .productPage class -->
@@ -417,33 +436,27 @@ if (isset($_POST['records-limit'])) {
                     <option value="4">Date</option>
                   </select>
                 </form>
+           
                 <form action="" class="aa-show-form">
                   <label for="">Show</label>
                   <select name="records-limit" id="records-limit">
                     <?php foreach([2,4,6] as $limit) : ?>
                     <option
                         <?php if(isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>
-                        value="<?= $limit; ?>">
-                        <?= $limit; ?>
+                        value="<?php echo $limit; ?>">
+                        <?php echo $limit; ?>
                     </option>
                     <?php endforeach; ?>
                   </select>
                 </form>
+               
               </div>
               <div class="aa-product-catg-head-right">
                 <a id="grid-catg" href="#"><span class="fa fa-th"></span></a>
                 <a id="list-catg" href="#"><span class="fa fa-list"></span></a>
               </div>
             </div>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#records-limit').change(function () {
-            $('form').submit();
-        })
-    });
-</script>
+           
             <div class="aa-product-catg-body">
               <ul class="aa-product-catg">
               <?php
@@ -641,6 +654,7 @@ if (isset($_POST['records-limit'])) {
             </div>
           </div>
         </div>
+       
         <div class="col-lg-3 col-md-3 col-sm-4 col-md-pull-9">
           <aside class="aa-sidebar">
             <!-- single sidebar -->

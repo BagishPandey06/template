@@ -381,7 +381,7 @@ session_start();
                         <td><?php echo '<img src="SimplaAdmin/productimg/' . $value['img'] . '">' ?></td>
                         <td><a class="aa-cart-title" href="#"><?php echo 
                         $value['name']?></a></td>
-                        <td><?php echo $value['pricee']?></td>
+                        <td><?php echo $value['pr']?></td>
                         <td>
                         <form method='POST'>
                         <input type = "Number" name ='qty' class="aa-cart-quantity"
@@ -403,7 +403,7 @@ session_start();
                             <input class="aa-cart-view-btn" 
                             type="submit" value="Apply Coupon">
                           </div>
-                          <input class="aa-cart-view-btn" type="submit" value="Update Cart">
+                  <input class="aa-cart-view-btn" type="submit" value="Update Cart">
                         </td>
                       </tr>
                       </tbody>

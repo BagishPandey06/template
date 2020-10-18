@@ -10,12 +10,6 @@
  */ 
 require 'config.php';
 session_start();
-// session_destroy();
-
-if(empty($_SESSION['e'])) {
-    echo '<script>alert("Product Added ")</script>';
-    header("Refresh:0; url=product.php");
-}
 if (isset($_REQUEST['id'])) {
     $id=$_REQUEST['id'];
     $sql="SELECT * FROM product WHERE `id`=$id";
@@ -33,7 +27,7 @@ if (isset($_REQUEST['id'])) {
                 $item = array(
                 "id" => $id,
                 "name" => $name,
-                "pricee"=>$pri,
+                "pr"=>$pri,
                 "price" => $pri*$qty,
                 "qty" => $qty,
                 "img" => $img
@@ -41,7 +35,7 @@ if (isset($_REQUEST['id'])) {
                 echo '<script>alert("Product Quantity Increased in cart 
                 Succefully")
                 </script>';
-                 header("url=product.php");
+                 header("location:product.php");
                 $_SESSION['e'][$id] = $item;
 
                 // show();
@@ -56,7 +50,7 @@ if (isset($_REQUEST['id'])) {
         $item = array(
             "name" => $name,
             "price" => $price,
-            "pricee" => $pri,
+            "pr" => $pri,
             "id" => $id,
             "qty"=> $qty,
             "img" => $img
@@ -64,7 +58,7 @@ if (isset($_REQUEST['id'])) {
        
         $_SESSION['e'][$id]= $item; 
         echo '<script>alert("Product Added ")</script>';
-        header("url=product.php"); 
+        header("location:product.php"); 
     }
 }
 
