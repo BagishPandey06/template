@@ -228,7 +228,7 @@ VALUES ("'.$name.'", "'.$price.'", "'.$file.'",
                    $r=mysqli_query($con, $sql);
     while ($row=mysqli_fetch_array($r)) { ?>
                     <input type="checkbox" name="tags" value="
-                    <?php echo $row["tag_id"];?>" />
+                    <?php echo $row["id"];?>" />
                         <?php echo $row["tagname"];?>
                     <?php 
     }

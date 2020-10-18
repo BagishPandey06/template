@@ -4,16 +4,16 @@
   
   // Set session
   session_start();
-  if(isset($_POST['records-limit'])){
+if (isset($_POST['records-limit'])) {
       $_SESSION['records-limit'] = $_POST['records-limit'];
-  }
+}
   
   $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
   $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
   $paginationStart = ($page - 1) * $limit;
   $a="SELECT * FROM product LIMIT $paginationStart, $limit";
   $r=mysqli_query($con, $a);
-  $product = mysqli_fetch_All($r);
+  $s="select * from product";
 
   // Get total records
   $b="SELECT count(*) AS `id` FROM product";
@@ -21,7 +21,7 @@
   $pr= mysqli_fetch_All($ra);
   $allRecrods = $pr[0]['id'];
   // Calculate total pages
-  $totoalPages = ceil($allRecrods / $limit);
+  $totoalPages =ceil($allRecrods / $limit);
   // Prev + Next
   $prev = $page - 1;
   $next = $page + 1;
@@ -141,7 +141,7 @@
                 <ul class="aa-head-top-nav-right">
                   <li><a href="account.html">My Account</a></li>
                   <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
-                  <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
+                  <li class="hidden-xs"><a href="cart.php">My Cart</a></li>
                   <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
                   <li><a href="" data-toggle="modal" 
                   data-target="#login-modal">Login</a></li>
@@ -420,7 +420,7 @@
                 <form action="" class="aa-show-form">
                   <label for="">Show</label>
                   <select name="records-limit" id="records-limit">
-                  <?php foreach([2,4,6] as $limit) : ?>
+                    <?php foreach([2,4,6] as $limit) : ?>
                     <option
                         <?php if(isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>
                         value="<?= $limit; ?>">
@@ -478,7 +478,7 @@
                     <a class="aa-product-img" href="#">
                     <?php echo'<img style="height:300px;width:250px;"
                     src="SimplaAdmin/productimg/' . $row['img'] . '">' ?></a> 
-                    <a class="aa-add-card-btn"href="#">
+                    <a class="aa-add-card-btn"href="addpro.php?id= <?php echo $row['id'];?>">
                     <span class="fa fa-shopping-cart"></span>Add To Cart</a>
                     <figcaption>
                       <h4 class="aa-product-title"><a href="#">
@@ -504,7 +504,7 @@
                   <span class="aa-badge aa-sale" href="#">SALE!</span>   
                 </li>
                 <?php
-                } ;
+                    };
                 ?>                    
               </ul>
               <!-- quick view modal -->                  
@@ -627,7 +627,7 @@
                   </li>
                   <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
                 <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                    <a class="page-link" href="index.php?page=<?= $i; ?>"> <?= $i; ?> </a>
+                    <a class="page-link" href="index.php?page=<?= $i; ?>"> <?= $i; ?></a>
                 </li>
                 <?php endfor; ?>
                   <li  class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
@@ -699,13 +699,13 @@
               <div class="aa-color-tag">
                 <?php  $sql='SELECT * FROM col';
                    $r=mysqli_query($con, $sql);
-                while ($row=mysqli_fetch_array($r)) { ?>         
-                       <a href="product.php?colid=<?php echo $row["col_id"];?>">
-                       <input type = "checkbox" name="col" value="<?php echo $row['col_id'] ?>"
-                            style="height:15px;width:15px;">
-                            <input type = "color" value = "<?php echo 
-                            $row['colname']?>" style="border:none;"
-                            disabled></a>
+                while ($row=mysqli_fetch_array($r)) { ?>
+                <a href="product.php?colid=
+                <?php echo $row["col_id"]?>">
+                <input type="color" value=
+                "<?php echo $row['colname'];?>"
+                style="border:none;width:50px;"disabled>
+                </a>         
                     <?php 
     }
                         ?>

@@ -1,3 +1,16 @@
+<?php
+/**
+ * * PHP version 7.2.10
+ * 
+ * @category Components
+ * @package  PackageName
+ * @author   Bagish <Bagishpandey999@gmail.com>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link     http://localhost/training/taskmy/dashboard.php
+ */ 
+require 'config.php';
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -356,36 +369,39 @@
                         <th>Total</th>
                       </tr>
                     </thead>
+                        <?php 
+                        // print_r($_SESSION);
+                        foreach ($_SESSION['e'] as $key => $value) {
+                          // session_destroy();
+                    ?>
                     <tbody>
                       <tr>
-                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="img/man/polo-shirt-1.png" alt="img"></a></td>
-                        <td><a class="aa-cart-title" href="#">Polo T-Shirt</a></td>
-                        <td>$250</td>
-                        <td><input class="aa-cart-quantity" type="number" value="1"></td>
-                        <td>$250</td>
+                        <td><a class="remove" href="deleteproduct.php?delid=<?php echo $value['id']?>
+                        "><fa class="fa fa-close"></fa></a></td>
+                        <td><?php echo '<img src="SimplaAdmin/productimg/' . $value['img'] . '">' ?></td>
+                        <td><a class="aa-cart-title" href="#"><?php echo 
+                        $value['name']?></a></td>
+                        <td><?php echo $value['pricee']?></td>
+                        <td>
+                        <form method='POST'>
+                        <input type = "Number" name ='qty' class="aa-cart-quantity"
+                        value="<?php echo $value['qty']?>">
+                        </form>
+                        </td>
+                        <td><?php 
+                        echo $value['price'];
+                        ?></td>
                       </tr>
-                      <tr>
-                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="img/man/polo-shirt-2.png" alt="img"></a></td>
-                        <td><a class="aa-cart-title" href="#">Polo T-Shirt</a></td>
-                        <td>$150</td>
-                        <td><input class="aa-cart-quantity" type="number" value="1"></td>
-                        <td>$150</td>
-                      </tr>
-                      <tr>
-                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="img/man/polo-shirt-3.png" alt="img"></a></td>
-                        <td><a class="aa-cart-title" href="#">Polo T-Shirt</a></td>
-                        <td>$50</td>
-                        <td><input class="aa-cart-quantity" type="number" value="1"></td>
-                        <td>$50</td>
-                      </tr>
+                    <?php
+                    }
+                    ?>
                       <tr>
                         <td colspan="6" class="aa-cart-view-bottom">
                           <div class="aa-cart-coupon">
-                            <input class="aa-coupon-code" type="text" placeholder="Coupon">
-                            <input class="aa-cart-view-btn" type="submit" value="Apply Coupon">
+                            <input class="aa-coupon-code" 
+                            type="text" placeholder="Coupon">
+                            <input class="aa-cart-view-btn" 
+                            type="submit" value="Apply Coupon">
                           </div>
                           <input class="aa-cart-view-btn" type="submit" value="Update Cart">
                         </td>
@@ -399,14 +415,20 @@
                <h4>Cart Totals</h4>
                <table class="aa-totals-table">
                  <tbody>
+                    <?php
+                    $total = 0;
+                    foreach ($_SESSION['e'] as $key => $value) {
+                        $total = $value['price'] + $total;
+                    }
+                    ?>
                    <tr>
                      <th>Subtotal</th>
-                     <td>$450</td>
+                     <td><?php echo $total ?></td>
                    </tr>
                    <tr>
                      <th>Total</th>
-                     <td>$450</td>
-                   </tr>
+                     <td><?php echo $total ?></td>
+                   </tr> 
                  </tbody>
                </table>
                <a href="#" class="aa-cart-view-btn">Proced to Checkout</a>
@@ -555,7 +577,6 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div>
-
 
     
     <!-- jQuery library -->
