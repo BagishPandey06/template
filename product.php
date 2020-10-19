@@ -25,9 +25,9 @@ if (isset($_POST['records-limit'])) {
   $sql = $con->query("SELECT count(id) AS id FROM product");
   // $pr= mysqli_fetch_All($sql);
   $allRecrods =0;
-  while ($row=mysqli_fetch_array($sql)) {
-  $allRecrods ++;
-  }
+while ($row=mysqli_fetch_array($sql)) {
+    $allRecrods ++;
+}
   
   // Calculate total pages
   $totoalPages =ceil($allRecrods / $limit);
@@ -459,31 +459,31 @@ if (isset($_POST['records-limit'])) {
            
             <div class="aa-product-catg-body">
               <ul class="aa-product-catg">
-              <?php
-              /**
-               * * PHP version 7.2.10
-               * 
-               * @category Components
-               * @package  PackageName
-               * @author   Bagish <Bagishpandey999@gmail.com>
-               * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
-               * @link     http://localhost/training/taskmy/dashboard.php
-               */ 
-              require 'config.php';
-              if (isset($_REQUEST['cid'])==0) {
-                   $sql="SELECT * FROM product";
-                  } if (isset($_REQUEST['cid'])!=0) {
+                <?php
+                /**
+                 * * PHP version 7.2.10
+                 * 
+                 * @category Components
+                 * @package  PackageName
+                 * @author   Bagish <Bagishpandey999@gmail.com>
+                 * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+                 * @link     http://localhost/training/taskmy/dashboard.php
+                 */ 
+                require 'config.php';
+                if (isset($_REQUEST['cid'])==0) {
+                    $sql="SELECT * FROM product";
+                } if (isset($_REQUEST['cid'])!=0) {
                     $id=$_REQUEST['cid'];
                     $sql="SELECT * FROM product WHERE `catid`=$id";
-                  } if (isset($_REQUEST['tid'])!=0) {
+                } if (isset($_REQUEST['tid'])!=0) {
                     $id=$_REQUEST['tid'];
                     $sql="SELECT * FROM product WHERE `tags`=$id";
-                  } if (isset($_REQUEST['colid'])!=0) {
+                } if (isset($_REQUEST['colid'])!=0) {
                     $id=$_REQUEST['colid'];
                     $sql="SELECT * FROM product WHERE `col_id`=$id";
-                  } 
+                } 
                 $result = $con->query($sql);
-              while ($row = $result->fetch_assoc()) {
+                while ($row = $result->fetch_assoc()) {
                     ?>
                 <!-- start single product item -->
                 <li>
@@ -491,7 +491,8 @@ if (isset($_POST['records-limit'])) {
                     <a class="aa-product-img" href="#">
                     <?php echo'<img style="height:300px;width:250px;"
                     src="SimplaAdmin/productimg/' . $row['img'] . '">' ?></a> 
-                    <a class="aa-add-card-btn"href="addpro.php?id= <?php echo $row['id'];?>">
+                    <a class="aa-add-card-btn"href="addpro.php?id= 
+                    <?php echo $row['id'];?>">
                     <span class="fa fa-shopping-cart"></span>Add To Cart</a>
                     <figcaption>
                       <h4 class="aa-product-title"><a href="#">
@@ -517,7 +518,7 @@ if (isset($_POST['records-limit'])) {
                   <span class="aa-badge aa-sale" href="#">SALE!</span>   
                 </li>
                 <?php
-                    };
+                };
                 ?>                    
               </ul>
               <!-- quick view modal -->                  
@@ -632,20 +633,31 @@ if (isset($_POST['records-limit'])) {
             <div class="aa-product-catg-pagination">
               <nav>
                 <ul class="pagination">
-                  <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
+                  <li class="page-item <?php if ($page <= 1) {
+                        echo 'disabled';
+                 };?>">
                     <a class="page-link"
-                        href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>" aria-label="Previous">
+                        href="<?php if ($page <= 1) {
+                           echo '#'; } else { 
+                             echo "?page=" . $prev; } ?>" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
                   <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
-                <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                    <a class="page-link" href="index.php?page=<?= $i; ?>"> <?= $i; ?></a>
+                <li class="page-item <?php if ($page == $i) {
+                  echo 'active'; 
+                  } ?>">
+                    <a class="page-link" href="index.php?page=<?php $i; ?>"
+                    > <?php $i;?>
+                    </a>
                 </li>
                 <?php endfor; ?>
-                  <li  class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+                  <li  class="page-item <?php if ($page >= $totoalPages) {
+                     echo 'disabled'; } ?>">
                     <a class="page-link"
-                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>" aria-label="Next">
+                        href="<?php if ($page >= $totoalPages) {
+                           echo '#'; } else {
+                             echo "?page=". $next; } ?>" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>

@@ -10,6 +10,34 @@
  */ 
 require 'config.php';
 session_start();
+//session_destroy();
+foreach ($_SESSION['e'] as $key => $a) {
+    if (isset($_POST[$key])) {
+        $val = $_POST['qty'];
+        $id = $a["id"];
+        $img = $a["img"];
+        $name = $a["name"];
+        $price = $a["price"];
+        $qty = $a["qty"];
+
+        $sql='SELECT * FROM product where `id`='.$id.'';
+        $r=mysqli_query($con, $sql);
+        while ($row=mysqli_fetch_array($r)) {
+            if ($row["id"] == $a["id"]) {
+                $p = $row["price"];
+                $cart = array(
+                "id" => $id,
+                "img" => $img,
+                "name" => $name,
+                "price" => $p * $val,
+                "qty" => $val
+                  );
+                $_SESSION['e'][$id] = $cart;
+                header("refresh: 0;cart.php");
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,11 +68,14 @@ session_start();
     <link href="css/style.css" rel="stylesheet">    
 
     <!-- Google Font -->
-    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato' 
+rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Raleway' 
+rel='stylesheet' type='text/css'>
     
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- HTML5 shim and Respond.js for IE8 support of
+     HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -79,13 +110,18 @@ session_start();
                 <!-- start language -->
                 <div class="aa-language">
                   <div class="dropdown">
-                    <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <a class="btn dropdown-toggle" href="#" type="button" 
+                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" 
+                    aria-expanded="true">
                       <img src="img/flag/english.jpg" alt="english flag">ENGLISH
                       <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                      <li><a href="#"><img src="img/flag/french.jpg" alt="">FRENCH</a></li>
-                      <li><a href="#"><img src="img/flag/english.jpg" alt="">ENGLISH</a></li>
+                      <li><a href="#">
+                      <img src="img/flag/french.jpg" alt="">FRENCH</a></li>
+                      <li>
+                      <a href="#"><img src="img/flag/english.jpg" alt="">
+                      ENGLISH</a></li>
                     </ul>
                   </div>
                 </div>
@@ -94,7 +130,9 @@ session_start();
                 <!-- start currency -->
                 <div class="aa-currency">
                   <div class="dropdown">
-                    <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <a class="btn dropdown-toggle" href="#" 
+                    type="button" id="dropdownMenu1" data-toggle="dropdown" 
+                    aria-haspopup="true" aria-expanded="true">
                       <i class="fa fa-usd"></i>USD
                       <span class="caret"></span>
                     </a>
@@ -118,7 +156,8 @@ session_start();
                   <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
                   <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
                   <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
-                  <li><a href="" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                  <li><a href="" data-toggle="modal" 
+                  data-target="#login-modal">Login</a></li>
                 </ul>
               </div>
             </div>
@@ -139,10 +178,12 @@ session_start();
                 <!-- Text based logo -->
                 <a href="index.html">
                   <span class="fa fa-shopping-cart"></span>
-                  <p>daily<strong>Shop</strong> <span>Your Shopping Partner</span></p>
+                  <p>daily<strong>Shop</strong>
+                   <span>Your Shopping Partner</span></p>
                 </a>
                 <!-- img based logo -->
-                <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
+                <!-- <a href="index.html">
+                <img src="img/logo.jpg" alt="logo img"></a> -->
               </div>
               <!-- / logo  -->
                <!-- cart box -->
@@ -155,20 +196,24 @@ session_start();
                 <div class="aa-cartbox-summary">
                   <ul>
                     <li>
-                      <a class="aa-cartbox-img" href="#"><img src="img/woman-small-2.jpg" alt="img"></a>
+                      <a class="aa-cartbox-img" href="#">
+                      <img src="img/woman-small-2.jpg" alt="img"></a>
                       <div class="aa-cartbox-info">
                         <h4><a href="#">Product Name</a></h4>
                         <p>1 x $250</p>
                       </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
+                      <a class="aa-remove-product" 
+                      href="#"><span class="fa fa-times"></span></a>
                     </li>
                     <li>
-                      <a class="aa-cartbox-img" href="#"><img src="img/woman-small-1.jpg" alt="img"></a>
+                      <a class="aa-cartbox-img" 
+                      href="#"><img src="img/woman-small-1.jpg" alt="img"></a>
                       <div class="aa-cartbox-info">
                         <h4><a href="#">Product Name</a></h4>
                         <p>1 x $250</p>
                       </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
+                      <a class="aa-remove-product"
+                       href="#"><span class="fa fa-times"></span></a>
                     </li>                    
                     <li>
                       <span class="aa-cartbox-total-title">
@@ -186,7 +231,8 @@ session_start();
               <!-- search box -->
               <div class="aa-search-box">
                 <form action="">
-                  <input type="text" name="" id="" placeholder="Search here ex. 'man' ">
+                  <input type="text" name="" 
+                  id="" placeholder="Search here ex. 'man' ">
                   <button type="submit"><span class="fa fa-search"></span></button>
                 </form>
               </div>
@@ -206,7 +252,8 @@ session_start();
         <!-- Navbar -->
         <div class="navbar navbar-default" role="navigation">
           <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <button type="button" class="navbar-toggle" 
+            data-toggle="collapse" data-target=".navbar-collapse">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
@@ -222,7 +269,9 @@ session_start();
                   <li><a href="#">Casual</a></li>
                   <li><a href="#">Sports</a></li>
                   <li><a href="#">Formal</a></li>
-                  <li><a href="#">Standard</a></li>                                                
+                  <li>
+                  <a href="#">Standard</a>
+                  </li>                                                
                   <li><a href="#">T-Shirts</a></li>
                   <li><a href="#">Shirts</a></li>
                   <li><a href="#">Jeans</a></li>
@@ -231,14 +280,17 @@ session_start();
                     <ul class="dropdown-menu">
                       <li><a href="#">Sleep Wear</a></li>
                       <li><a href="#">Sandals</a></li>
-                      <li><a href="#">Loafers</a></li>                                      
+                      <li><a href="#">Loafers</a>
+                      </li>                                      
                     </ul>
                   </li>
                 </ul>
               </li>
               <li><a href="#">Women <span class="caret"></span></a>
                 <ul class="dropdown-menu">  
-                  <li><a href="#">Kurta & Kurti</a></li>                                                                
+                  <li><a href="#">Kurta & Kurti
+                  </a>
+                </li>                                                                
                   <li><a href="#">Trousers</a></li>              
                   <li><a href="#">Casual</a></li>
                   <li><a href="#">Sports</a></li>
@@ -256,7 +308,8 @@ session_start();
                           <li><a href="#">Earrings</a></li>
                           <li><a href="#">Jewellery Sets</a></li>
                           <li><a href="#">Lockets</a></li>
-                          <li class="disabled"><a class="disabled" href="#">Disabled item</a></li>                       
+                          <li class="disabled"><a class="disabled"
+                           href="#">Disabled item</a></li>                       
                           <li><a href="#">Jeans</a></li>
                           <li><a href="#">Polo T-Shirts</a></li>
                           <li><a href="#">SKirts</a></li>
@@ -269,7 +322,8 @@ session_start();
                           <li><a href="#">Hand Bags</a></li>
                           <li><a href="#">Single Bags</a></li>
                           <li><a href="#">Travel Bags</a></li>
-                          <li><a href="#">Wallets & Belts</a></li>                        
+                          <li><a href="#">Wallets & Belts</a>
+                          </li>                        
                           <li><a href="#">Sunglases</a></li>
                           <li><a href="#">Nail</a></li>                       
                         </ul>
@@ -283,7 +337,8 @@ session_start();
                   <li><a href="#">Casual</a></li>
                   <li><a href="#">Sports</a></li>
                   <li><a href="#">Formal</a></li>
-                  <li><a href="#">Standard</a></li>                                                
+                  <li><a href="#">Standard</a>
+                  </li>                                                
                   <li><a href="#">T-Shirts</a></li>
                   <li><a href="#">Shirts</a></li>
                   <li><a href="#">Jeans</a></li>
@@ -292,7 +347,8 @@ session_start();
                     <ul class="dropdown-menu">
                       <li><a href="#">Sleep Wear</a></li>
                       <li><a href="#">Sandals</a></li>
-                      <li><a href="#">Loafers</a></li>                                      
+                      <li><a href="#">Loafers</a>
+                      </li>                                      
                     </ul>
                   </li>
                 </ul>
@@ -303,7 +359,8 @@ session_start();
                   <li><a href="#">Camera</a></li>
                   <li><a href="#">Mobile</a></li>
                   <li><a href="#">Tablet</a></li>
-                  <li><a href="#">Laptop</a></li>                                                
+                  <li><a href="#">Laptop</a>
+                  </li>                                                
                   <li><a href="#">Accesories</a></li>                
                 </ul>
               </li>
@@ -319,7 +376,8 @@ session_start();
               <li><a href="#">Pages <span class="caret"></span></a>
                 <ul class="dropdown-menu">                
                   <li><a href="product.html">Shop Page</a></li>
-                  <li><a href="product-detail.html">Shop Single</a></li>                
+                  <li><a href="product-detail.html">Shop Single</a>
+                  </li>                
                   <li><a href="404.html">404 Page</a></li>                
                 </ul>
               </li>
@@ -372,20 +430,25 @@ session_start();
                         <?php 
                         // print_r($_SESSION);
                         foreach ($_SESSION['e'] as $key => $value) {
-                          // session_destroy();
+                            // session_destroy();
                     ?>
                     <tbody>
                       <tr>
-                        <td><a class="remove" href="delcrt.php?id=<?php echo $value['id']?>
+                        <td><a class="remove" href="delcrt.php?id=
+                        <?php echo $value['id']?>
                         "><fa class="fa fa-close"></fa></a></td>
-                        <td><?php echo '<img src="SimplaAdmin/productimg/' . $value['img'] . '">' ?></td>
+                        <td><?php echo 
+                        '<img src="SimplaAdmin/productimg/' . $value['img'] . '">' ?>
+                        </td>
                         <td><a class="aa-cart-title" href="#"><?php echo 
                         $value['name']?></a></td>
-                        <td><?php echo $value['pr']?></td>
+                        <td><?php echo $value['price']?></td>
                         <td>
                         <form method='POST'>
-                        <input type = "Number" name ='qty' class="aa-cart-quantity"
+                        <input type = "text" name ='qty' class="aa-cart-quantity"
                         value="<?php echo $value['qty']?>">
+                        <input type='submit' name=
+                        "<?php echo $key;?>"value='update'></form>
                         </form>
                         </td>
                         <td><?php 
@@ -393,7 +456,8 @@ session_start();
                         ?></td>
                       </tr>
                     <?php
-                    }
+                        }
+                    
                     ?>
                       <tr>
                         <td colspan="6" class="aa-cart-view-bottom">
@@ -416,18 +480,18 @@ session_start();
                <table class="aa-totals-table">
                  <tbody>
                     <?php
-                    $total = 0;
+                    $t = 0;
                     foreach ($_SESSION['e'] as $key => $value) {
-                        $total = $value['price'] + $total;
+                        $t = $value['price'] + $t;
                     }
                     ?>
                    <tr>
                      <th>Subtotal</th>
-                     <td><?php echo $total ?></td>
+                     <td><?php echo $t; ?></td>
                    </tr>
                    <tr>
                      <th>Total</th>
-                     <td><?php echo $total ?></td>
+                     <td><?php echo $t; ?></td>
                    </tr> 
                  </tbody>
                </table>
@@ -449,7 +513,8 @@ session_start();
         <div class="col-md-12">
           <div class="aa-subscribe-area">
             <h3>Subscribe our newsletter </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, velit!</p>
+            <p>Lorem ipsum dolor sit amet, consectetur 
+            adipisicing elit. Ex, velit!</p>
             <form action="" class="aa-subscribe-form">
               <input type="email" name="" id="" placeholder="Enter your Email">
               <input type="submit" value="Subscribe">
@@ -555,11 +620,13 @@ session_start();
   </footer>
   <!-- / footer -->
   <!-- Login Modal -->  
-  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade" id="login-modal" tabindex="-1" 
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">                      
         <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" 
+        data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4>Login or Register</h4>
           <form class="aa-login-form" action="">
             <label for="">Username or Email address<span>*</span></label>
@@ -567,7 +634,8 @@ session_start();
             <label for="">Password<span>*</span></label>
             <input type="password" placeholder="Password">
             <button class="aa-browse-btn" type="submit">Login</button>
-            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
+            <label for="rememberme" class="rememberme">
+            <input type="checkbox" id="rememberme"> Remember me </label>
             <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
             <div class="aa-register-now">
               Don't have an account?<a href="account.html">Register now!</a>
@@ -580,13 +648,16 @@ session_start();
 
     
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+<script 
+src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins 
+    (below), or include individual files as needed -->
     <script src="js/bootstrap.js"></script>  
     <!-- SmartMenus jQuery plugin -->
     <script type="text/javascript" src="js/jquery.smartmenus.js"></script>
     <!-- SmartMenus jQuery Bootstrap Addon -->
-    <script type="text/javascript" src="js/jquery.smartmenus.bootstrap.js"></script>  
+    <script type="text/javascript" 
+    src="js/jquery.smartmenus.bootstrap.js"></script>  
     <!-- To Slider JS -->
     <script src="js/sequence.js"></script>
     <script src="js/sequence-theme.modern-slide-in.js"></script>  

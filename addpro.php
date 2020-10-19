@@ -32,13 +32,10 @@ if (isset($_REQUEST['id'])) {
                 "qty" => $qty,
                 "img" => $img
                     );
-                echo '<script>alert("Product Quantity Increased in cart 
-                Succefully")
-                </script>';
-                 header("location:product.php");
                 $_SESSION['e'][$id] = $item;
-
-                // show();
+                echo '<script>alert("Product Quantity Increased
+                Succefully")</script>';
+                 header("refresh:0;product.php");
                 return;
             }
         }
@@ -58,7 +55,7 @@ if (isset($_REQUEST['id'])) {
        
         $_SESSION['e'][$id]= $item; 
         echo '<script>alert("Product Added ")</script>';
-        header("location:product.php"); 
+        header("refresh:0;product.php"); 
     }
 }
 
