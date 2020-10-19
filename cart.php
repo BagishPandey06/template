@@ -11,6 +11,14 @@
 require 'config.php';
 session_start();
 //session_destroy();
+if (empty($_SESSION['e'])) {
+  echo '<script>
+  alert("ADD PRODUCT FIRST!!!");
+  </script>';
+  header("refresh:0;url=product.php");
+  return false;
+
+}
 foreach ($_SESSION['e'] as $key => $a) {
     if (isset($_POST[$key])) {
         $val = $_POST['qty'];
@@ -434,9 +442,8 @@ rel='stylesheet' type='text/css'>
                     ?>
                     <tbody>
                       <tr>
-                        <td><a class="remove" href="delcrt.php?id=
-                        <?php echo $value['id']?>
-                        "><fa class="fa fa-close"></fa></a></td>
+                        <td><a class="remove" href='delcrt.php?id=<?php echo $value['id'];?>
+                        '><fa class="fa fa-close"></fa></a></td>
                         <td><?php echo 
                         '<img src="SimplaAdmin/productimg/' . $value['img'] . '">' ?>
                         </td>
@@ -445,7 +452,7 @@ rel='stylesheet' type='text/css'>
                         <td><?php echo $value['price']?></td>
                         <td>
                         <form method='POST'>
-                        <input type = "text" name ='qty' class="aa-cart-quantity"
+                        <input type = "number" name ='qty' class="aa-cart-quantity"
                         value="<?php echo $value['qty']?>">
                         <input type='submit' name=
                         "<?php echo $key;?>"value='update'></form>
@@ -495,7 +502,7 @@ rel='stylesheet' type='text/css'>
                    </tr> 
                  </tbody>
                </table>
-               <a href="#" class="aa-cart-view-btn">Proced to Checkout</a>
+               <a href="chkout.php" class="aa-cart-view-btn">Proced to Checkout</a>
              </div>
            </div>
          </div>

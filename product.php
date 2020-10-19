@@ -1,4 +1,13 @@
 <?php 
+/**
+ * * PHP version 7.2.10
+ * 
+ * @category Components
+ * @package  PackageName
+ * @author   Bagish <Bagishpandey999@gmail.com>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link     http://localhost/training/taskmy/dashboard.php
+ */
   // Database
   require 'config.php';
   
@@ -10,25 +19,35 @@ if (isset($_POST['records-limit'])) {
   
   $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 2;
  
-  $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] :5;
+  $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] :1;
   
   $paginationStart = ($page - 1) * $limit;
   
-  $a="SELECT * FROM product LIMIT $paginationStart, $limit";
-  $r=mysqli_query($con, $a);
-  $s="select * from product";
-
+  
+  // $s="select * from product";
+if (isset($_REQUEST['cid'])==0) {
+    $sql="SELECT * FROM product LIMIT $paginationStart, $limit";
+} if (isset($_REQUEST['cid'])!=0) {
+    $id=$_REQUEST['cid'];
+    $sql="SELECT * FROM product LIMIT $paginationStart, $limit WHERE `catid`=$id";
+} if (isset($_REQUEST['tid'])!=0) {
+    $id=$_REQUEST['tid'];
+    $sql="SELECT * FROM product LIMIT $paginationStart, $limit WHERE `tags`=$id";
+} if (isset($_REQUEST['colid'])!=0) {
+    $id=$_REQUEST['colid'];
+    $sql="SELECT * FROM product LIMIT $paginationStart, $limit WHERE `col_id`=$id";
+} 
+$r=mysqli_query($con, $sql);
+  //
+  // $result = $con->query($sql);
   // Get total records
   // $b="SELECT count(*) AS `id` FROM product";
   // $ra=mysqli_query($con, $b);
   // $pr= mysqli_fetch_All($ra);
   $sql = $con->query("SELECT count(id) AS id FROM product");
-  // $pr= mysqli_fetch_All($sql);
-  $allRecrods =0;
-while ($row=mysqli_fetch_array($sql)) {
-    $allRecrods ++;
-}
-  
+  $pr= mysqli_fetch_All($sql);
+  $allRecrods = (int)($pr);
+//print_r((int)$allRecrods);
   // Calculate total pages
   $totoalPages =ceil($allRecrods / $limit);
   // Prev + Next
@@ -79,15 +98,7 @@ while ($row=mysqli_fetch_array($sql)) {
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#records-limit').change(function () {
-            $('form').submit();
-        })
-    });
-</script>
+   
   </head>
   <!-- !Important notice -->
   <!-- Only for product page body tag have to added .productPage class -->
@@ -442,7 +453,7 @@ while ($row=mysqli_fetch_array($sql)) {
                   <select name="records-limit" id="records-limit">
                     <?php foreach([2,4,6] as $limit) : ?>
                     <option
-                        <?php if(isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>
+                        <?php if (isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>
                         value="<?php echo $limit; ?>">
                         <?php echo $limit; ?>
                     </option>
@@ -460,30 +471,11 @@ while ($row=mysqli_fetch_array($sql)) {
             <div class="aa-product-catg-body">
               <ul class="aa-product-catg">
                 <?php
-                /**
-                 * * PHP version 7.2.10
-                 * 
-                 * @category Components
-                 * @package  PackageName
-                 * @author   Bagish <Bagishpandey999@gmail.com>
-                 * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
-                 * @link     http://localhost/training/taskmy/dashboard.php
-                 */ 
+                 
                 require 'config.php';
-                if (isset($_REQUEST['cid'])==0) {
-                    $sql="SELECT * FROM product";
-                } if (isset($_REQUEST['cid'])!=0) {
-                    $id=$_REQUEST['cid'];
-                    $sql="SELECT * FROM product WHERE `catid`=$id";
-                } if (isset($_REQUEST['tid'])!=0) {
-                    $id=$_REQUEST['tid'];
-                    $sql="SELECT * FROM product WHERE `tags`=$id";
-                } if (isset($_REQUEST['colid'])!=0) {
-                    $id=$_REQUEST['colid'];
-                    $sql="SELECT * FROM product WHERE `col_id`=$id";
-                } 
-                $result = $con->query($sql);
-                while ($row = $result->fetch_assoc()) {
+                
+                  // foreach($pr as $row) {
+                    while($row=mysqli_fetch_assoc($r)){
                     ?>
                 <!-- start single product item -->
                 <li>
@@ -518,7 +510,8 @@ while ($row=mysqli_fetch_array($sql)) {
                   <span class="aa-badge aa-sale" href="#">SALE!</span>   
                 </li>
                 <?php
-                };
+                  }
+                 
                 ?>                    
               </ul>
               <!-- quick view modal -->                  
@@ -666,7 +659,15 @@ while ($row=mysqli_fetch_array($sql)) {
             </div>
           </div>
         </div>
-       
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#records-limit').change(function () {
+            $('form').submit();
+        })
+    });
+</script>
         <div class="col-lg-3 col-md-3 col-sm-4 col-md-pull-9">
           <aside class="aa-sidebar">
             <!-- single sidebar -->
