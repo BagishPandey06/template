@@ -88,7 +88,9 @@ current
                         Orders
                     </a>
                     <ul>
-                        <li><a href="#">Manage orders</a></li>
+                    <li><a <?php if($filename == "mo.php" ) :?>
+                    class="current"<?php endif; ?>
+                        href="mo.php">Manage orders</a></li>
                     </ul>
                 </li>
                 <li>

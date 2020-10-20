@@ -12,11 +12,11 @@ require 'config.php';
 session_start();
 //session_destroy();
 if (empty($_SESSION['e'])) {
-  echo '<script>
+    echo '<script>
   alert("ADD PRODUCT FIRST!!!");
   </script>';
-  header("refresh:0;url=product.php");
-  return false;
+    header("refresh:0;url=product.php");
+    return false;
 
 }
 foreach ($_SESSION['e'] as $key => $a) {
@@ -442,7 +442,8 @@ rel='stylesheet' type='text/css'>
                     ?>
                     <tbody>
                       <tr>
-                        <td><a class="remove" href='delcrt.php?id=<?php echo $value['id'];?>
+                        <td><a class="remove" href=
+                        'delcrt.php?id=<?php echo $value['id'];?>
                         '><fa class="fa fa-close"></fa></a></td>
                         <td><?php echo 
                         '<img src="SimplaAdmin/productimg/' . $value['img'] . '">' ?>

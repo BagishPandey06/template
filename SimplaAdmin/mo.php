@@ -8,39 +8,12 @@
  * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
  * @link     http://localhost/training/taskmy/dashboard.php
  */
-        require 'header.php'; 
-        require 'sidebar.php';
-       require 'config.php';
-       
-        $error=array();
-if (isset($_POST['submit'])) {
-             $file= $_FILES["file"]["name"]; 
-             $tempname = $_FILES["file"]["tmp_name"];     
-             $folder = "productimg/".$file; 
-    if (move_uploaded_file($tempname, $folder)) { 
-                 $error=array('input'=>'form','msg'=>'Image Successfully  Added'); 
-    } else { 
-                $error=array('input'=>'form','msg'=>'Image FAiled to Add');  
-    }
-             $name=isset($_POST['name'])?$_POST['name']:'';
-             $price=isset($_POST['price'])?$_POST['price']:'';
-             $cat=isset($_POST['cat'])?$_POST['cat']:'';
-             $tags=isset($_POST['tags'])?$_POST['tags']:'';
-             $desc=isset($_POST['desc'])?$_POST['desc']:'';
-             $col=isset($_POST['col'])?$_POST['col']:'';
-             $sql = 'INSERT INTO 
-             product(`name`,`price`,`img`,`catid`,`tags`,`descr`,`col_id`) 
-VALUES ("'.$name.'", "'.$price.'", "'.$file.'",
-"'.$cat.'","'.$tags.'","'.$desc.'","'.$col.'")';
-    if ($con->query($sql) === true) {
-        echo '<script>alert("product added succesfully!!");</script>';
-    } else {
-                 $error=array('input'=>'form','msg'=>$con->error);
-                
-    }
-}
-       
-        ?>
+
+require 'config.php';
+$error = array();
+require 'header.php'; 
+require 'sidebar.php';
+?>
         <div id="main-content"> <!-- Main Content Section with everything -->
         
         <noscript> <!-- Show a notification if the user has disabled javascript -->
@@ -69,9 +42,8 @@ VALUES ("'.$name.'", "'.$price.'", "'.$file.'",
                 <h3>Content box</h3>
                 
                 <ul class="content-box-tabs">
-                    <li><a href="#tab1" class="default-tab">Manage product</a>
+                    <li><a href="#tab1" class="default-tab">users</a>
                 </li> <!-- href must be unique and match the id of target div -->
-                    <li><a href="#tab2">ADD product</a></li>
                 </ul>
                 
                 <div class="clear"></div>
@@ -88,29 +60,24 @@ VALUES ("'.$name.'", "'.$price.'", "'.$file.'",
                     <img src="resources/images/icons/cross_grey_small.png"
                     title="Close this notification" alt="close"/>
                     </a>
-                        <div>
+ <div>
                     This is a Content Box. You can put whatever you want in 
                     it. By the way,you can close this notification with 
                     the top-right cross.
                         </div>
                     </div>
-                    
-                    <table>
+
+    <table>
                         
                         <thead>
                             <tr>
-                                <!-- <th><input class="check-all" 
-                                type="checkbox" /></th> -->
-                                <th>Id</th>
-                                <th>product name</th>
-                                <th>product image</th>
-                                <th>product price</th>
-                                <th>Product color</th>
-                                <th>categorie</th>
-                                <th>Tags</th>
-                                <th>description</th>
+                         <!-- <th><input class="check-all"
+                          type="checkbox" /></th> -->
+                                <th>order Id</th>
+                                <th>cart data</th>
+                                <th>cart total</th>
+                                <th>data</th>
                                 <th>Action</th>
-                               
                             </tr>
                             
                         </thead>
@@ -118,7 +85,7 @@ VALUES ("'.$name.'", "'.$price.'", "'.$file.'",
                         <tfoot>
                             <tr>
                                 <td colspan="6">
-                                    <div class="bulk-actions align-left">
+                                    <!-- <div class="bulk-actions align-left">
                                         <select name="dropdown">
                                         <option value="option1">
                                             Choose an action...</option>
@@ -127,7 +94,7 @@ VALUES ("'.$name.'", "'.$price.'", "'.$file.'",
                                         </select>
                                         <a class="button" href="#">
                                             Apply to selected</a>
-                                    </div>
+                                    </div> -->
                                     
                                     <div class="pagination">
                                     <a href="#" title="First Page">&laquo; First</a>
@@ -149,31 +116,23 @@ VALUES ("'.$name.'", "'.$price.'", "'.$file.'",
                         <tbody>
                         <?php
                         require 'config.php';
-                        $sql="select * from product";
+                        $sql="select * from ordertab";
                         $r=mysqli_query($con, $sql);
                         while ($row=mysqli_fetch_array($r)) { 
                     ?>
                             <tr>
                             
                                 <!-- <td><input type="checkbox" /></td> -->
-                                <td><?php echo $row["id"];?></td>
-                                <td><?php echo $row["name"];?></td>
-                                <td><?php echo'<img src="productimg/'
-                                .$row["img"].'">';?></td>
-                                <td><?php echo $row["price"];?></td>
-                                <td><?php echo $row["col_id"];?></td>
-                                <td><?php echo $row["catid"];?></td>
-                                <td><?php echo $row["tags"];?></td>
-                                <td><?php echo $row["descr"];?></td>
+                                <td><?php echo $row["orderid"];?></td>
+                                <td><?php echo $row["cartdata"];?></td>
+                                <td><?php echo $row['carttotal'];?></td>
+                                <td><?php echo $row["date"];?></td>
                                 
                                 <td>
                                 
                                     <!-- Icons -->
-                                    <a href='editpro.php?id=
-                                    <?php echo $row["id"]?>' title="Edit">
-                    <img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-                                    <a href='deletepro.php?id=
-                                    <?php echo $row["id"];?>' title="Delete">
+                                    <a href='delorder.php?id=
+                                    <?php echo $row["orderid"];?>' title="Delete">
                                         <img src="resources/images/icons/cross.png"
                                          alt="Delete" /></a> 
                                 
@@ -188,78 +147,28 @@ VALUES ("'.$name.'", "'.$price.'", "'.$file.'",
                         </tbody>
                         
                     </table>
+                             
+                        
                     
                 </div> <!-- End #tab1 -->
                 
-                <div class="tab-content" id="tab2">               
-                <h2>ADD-PRODUCT</h2>
-   <form action="" method="POST" enctype="multipart/form-data">
-    <p>
-  <label for="name">product name:<br><input type="text"name="name"required>
-  </label>
-    </p>
-    <p>
-<label for="price">product price:<br><input type="text"name="price"required>
-</label>
-    </p>
-    <p>
-     <label for="img">product img:<br> <input type="file"name="file"required></label>
-    </p>
-    <p>
-    <label for="cat">Choose a categorie:</label>
-    <select name="cat" id="cat">
-    <?php 
-  
-    $sql="select * from categorie";
-                   $r=mysqli_query($con, $sql);
-    while ($row=mysqli_fetch_array($r)) { ?>
-                   
-                    <option value=" <?php echo $row["catid"];?>">
-                    <?php echo $row["catname"];?></option>
-                    <?php  
-    }
-                        ?>
-</select> 
-</p>
-<br>
-<p>
-    <label for="tag">Tags:</label>
-    <?php  $sql="select * from tag";
-                   $r=mysqli_query($con, $sql);
-    while ($row=mysqli_fetch_array($r)) { ?>
-                    <input type="checkbox" name="tags" value="
-                    <?php echo $row["id"];?>" />
-                        <?php echo $row["tagname"];?>
-                    <?php 
-    }
-                        ?>
-</p>
-<br>
-<p>
-    <label for="color">Colors:</label>
-    <?php  $sql='SELECT * FROM col';
-                   $r=mysqli_query($con, $sql);
-    while ($row=mysqli_fetch_array($r)) { ?>
-                    <input type="checkbox" name="col"
-                    value=
-                    "<?php echo $row['col_id'];?>" style="hegiht:20px;width:25px;">
-                        <input type="color" 
-                        value=
-                        "<?php echo $row['colname'];?>"
-                         style="border:none;" disabled>
-                    <?php 
-    }
-                        ?>
-</p>
-<p>
-                                <label>Description</label>
-                                <textarea class="text-input textarea wysiwyg" 
-                                id="textarea" name="desc" cols="79" rows="15">
-                            </textarea>
-                            </p>
-    <p>
-     <input type="submit" name="submit" class="button" value="SUBMIT">
-    </p>
+                <div class="tab-content" id="tab2">
+                
+                    <form action="#" method="post">
+                        
+                    <fieldset>
+                    <div id="error">
+    <?php if(sizeof($error) >0 ) :?>
+  <ul>
+    <?php foreach($error as $errors):?>
+  <li>
+<?php echo $error['msg']; break?>
+  </li>
+    <?php endforeach;?>
+  </ul>
+    <?php endif; ?>
+  </div>
+                              </fieldset>
                         
                         <div class="clear"></div><!-- End .clear -->
                         

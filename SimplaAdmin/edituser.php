@@ -30,7 +30,8 @@ if (isset($_POST['submit'])) {
 
     
     if (sizeof($error) == 0) {
-        $sql ="UPDATE user SET `username`='$username', `email`='$email', `password`='$password' WHERE `id`=$id"; 
+        $sql ="UPDATE user SET `username`='$username', `email`='$email',
+         `password`='$password' WHERE `id`=$id"; 
         $res = $con->query($sql);
         if ($res) {
             echo "Record updated successfully";

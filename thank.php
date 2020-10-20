@@ -20,9 +20,9 @@
        <center><h2>
        thank you!!!!
        </h2></center>
-       <?php 
-       session_start();
-       session_destroy();
-       ?>
+        <?php 
+        session_start();
+        session_destroy();
+        ?>
     </body>
     </html>
