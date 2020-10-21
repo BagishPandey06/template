@@ -9,8 +9,9 @@ require 'header.php';
           <div class="aa-product-details-area">
             <?php $id=$_REQUEST['id'];
                   require 'config.php';
+                 
                   $r=$con->query("SELECT *FROM product WHERE `id`=$id");
-            while ($row=mysqli_fetch_assoc($r)) {
+               while ($row=mysqli_fetch_assoc($r)) {
                     ?>
             <div class="aa-product-details-content">
               <div class="row">
@@ -69,7 +70,7 @@ require 'header.php';
                         </div>
                     <div class="aa-prod-quantity">
                       <form action="">
-                        <select id="" name="">
+                        <select id="" name="qty" >
                           <option selected="1" value="0">1</option>
                           <option value="1">2</option>
                           <option value="2">3</option>
@@ -83,11 +84,22 @@ require 'header.php';
               $sql='select * from categorie where `catid`="'.$row['catid'].'"';
               $r=mysqli_query($con, $sql);
             while ($row=mysqli_fetch_array($r)) { 
-            ?><a href="#"><?php echo $row["catname"];?></a><? };?>
+            ?><a href="#">
+            <?php echo $row["catname"];?></a>
+            <? };?>
                       </p>
                     </div>
                     <div class="aa-prod-view-bottom">
-                      <a class="aa-add-to-cart-btn" href="">Add To Cart</a>
+                    <?php 
+                 
+                  $r=$con->query("SELECT *FROM product WHERE `id`=$id");
+               while ($row=mysqli_fetch_assoc($r)) {
+                 echo $row['id'];
+                    ?>
+                      <a class="aa-add-to-cart-btn"href="proadd.php?id=<?php echo $row['id'];?>">Add To Cart</a>
+              <?php
+               };
+               ?>
                       <a class="aa-add-to-cart-btn" href="#">Wishlist</a>
                       <a class="aa-add-to-cart-btn" href="#">Compare</a>
                     </div>
@@ -96,7 +108,8 @@ require 'header.php';
               </div>
             </div>
             <?php 
-            }; ?>
+            }; 
+          ?>
             <div class="aa-product-details-bottom">
               <ul class="nav nav-tabs" id="myTab2">
                 <li><a href="#description" data-toggle="tab">Description</a></li>
@@ -489,7 +502,9 @@ data-big-image="img/view-slider/medium/polo-shirt-1.png">
                               <span class="aa-product-view-price">$34.99</span>
  <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
                             </div>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis animi, veritatis quae repudiandae quod nulla porro quidem, itaque quis quaerat!</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+ Officiis animi, veritatis quae repudiandae 
+ quod nulla porro quidem, itaque quis quaerat!</p>
                             <h4>Size</h4>
                             <div class="aa-prod-view-size">
                               <a href="#">S</a>
@@ -524,7 +539,7 @@ data-big-image="img/view-slider/medium/polo-shirt-1.png">
                 </div><!-- /.modal-dialog -->
               </div>
               <!-- / quick view modal -->   
-            </div>  
+            </div> 
           </div>
         </div>
       </div>

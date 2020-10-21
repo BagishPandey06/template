@@ -88,7 +88,7 @@ foreach ($_SESSION['e'] as $key => $a) {
                         <td><?php echo $value['price']?></td>
                         <td>
                         <form method='POST'>
-                        <input type = "number" name ='qty' class="aa-cart-quantity"
+                        <input type = "text" name ='qty' class="aa-cart-quantity"
                         value="<?php echo $value['qty']?>">
                         <input type='submit' name=
                         "<?php echo $key;?>"value='update'></form>
