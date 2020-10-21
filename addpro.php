@@ -58,5 +58,5 @@ if (isset($_REQUEST['id'])) {
         header("refresh:0;product.php"); 
     }
 }
-
+//session_destroy();
 ?>
