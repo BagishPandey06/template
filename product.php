@@ -10,50 +10,6 @@
  */
   // Database
   require 'config.php';
-  
-  // Set session
-  session_start();
-if (isset($_POST['records-limit'])) {
-      $_SESSION['records-limit'] = $_POST['records-limit'];
-}
-  
-  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 2;
- 
-  $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] :1;
-  
-  $paginationStart = ($page - 1) * $limit;
-  
-  
-  // $s="select * from product";
-if (isset($_REQUEST['cid'])==0) {
-    $sql="SELECT * FROM product LIMIT $paginationStart, $limit";
-} if (isset($_REQUEST['cid'])!=0) {
-    $id=$_REQUEST['cid'];
-    $sql="SELECT * FROM product LIMIT $paginationStart, $limit WHERE `catid`=$id";
-} if (isset($_REQUEST['tid'])!=0) {
-    $id=$_REQUEST['tid'];
-    $sql="SELECT * FROM product LIMIT $paginationStart, $limit WHERE `tags`=$id";
-} if (isset($_REQUEST['colid'])!=0) {
-    $id=$_REQUEST['colid'];
-    $sql="SELECT * FROM product LIMIT $paginationStart, $limit WHERE `col_id`=$id";
-} 
-$r=mysqli_query($con, $sql);
-  //
-  // $result = $con->query($sql);
-  // Get total records
-  // $b="SELECT count(*) AS `id` FROM product";
-  // $ra=mysqli_query($con, $b);
-  // $pr= mysqli_fetch_All($ra);
-  $sql = $con->query("SELECT count(id) AS id FROM product");
-  $pr= mysqli_fetch_All($sql);
-  $allRecrods = (int)($pr);
-//print_r((int)$allRecrods);
-  // Calculate total pages
-  $totoalPages =ceil($allRecrods / $limit);
-  // Prev + Next
-  $prev = $page - 1;
-  $next = $page + 1;
- // session_destroy();
 ?>
 
 <!DOCTYPE html>
@@ -450,14 +406,10 @@ $r=mysqli_query($con, $sql);
            
                 <form action="" class="aa-show-form">
                   <label for="">Show</label>
-                  <select name="records-limit" id="records-limit">
-                    <?php foreach([2,4,6] as $limit) : ?>
-                    <option
-                        <?php if (isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>
-                        value="<?php echo $limit; ?>">
-                        <?php echo $limit; ?>
-                    </option>
-                    <?php endforeach; ?>
+                  <select name="">
+                    <option value="1" selected="12">12</option>
+                    <option value="2">24</option>
+                    <option value="3">36</option>
                   </select>
                 </form>
                
@@ -470,17 +422,26 @@ $r=mysqli_query($con, $sql);
            
             <div class="aa-product-catg-body">
               <ul class="aa-product-catg">
-                <?php
-                 
-                require 'config.php';
-                
-                  // foreach($pr as $row) {
-                    while($row=mysqli_fetch_assoc($r)){
+                <?php   
+                if (isset($_REQUEST['cid'])==0) {
+                    $sql="SELECT * FROM product ";
+                } if (isset($_REQUEST['cid'])!=0) {
+                    $id=$_REQUEST['cid'];
+                    $sql="SELECT * FROM product WHERE `catid`=$id";
+                } if (isset($_REQUEST['tid'])!=0) {
+                    $id=$_REQUEST['tid'];
+                    $sql="SELECT * FROM product WHERE `tags`=$id";
+                } if (isset($_REQUEST['colid'])!=0) {
+                    $id=$_REQUEST['colid'];
+                    $sql="SELECT * FROM product WHERE `col_id`=$id";
+                } 
+                   $r=mysqli_query($con,$sql);
+                while ($row=mysqli_fetch_assoc($r)) {
                     ?>
                 <!-- start single product item -->
                 <li>
                   <figure>
-                    <a class="aa-product-img" href="#">
+                    <a class="aa-product-img" href="product-detail.php?id=<?php echo $row['id'];?>">
                     <?php echo'<img style="height:300px;width:250px;"
                     src="SimplaAdmin/productimg/' . $row['img'] . '">' ?></a> 
                     <a class="aa-add-card-btn"href="addpro.php?id= 
@@ -510,7 +471,7 @@ $r=mysqli_query($con, $sql);
                   <span class="aa-badge aa-sale" href="#">SALE!</span>   
                 </li>
                 <?php
-                  }
+                }
                  
                 ?>                    
               </ul>
@@ -624,33 +585,20 @@ $r=mysqli_query($con, $sql);
               <!-- / quick view modal -->       
             </div>
             <div class="aa-product-catg-pagination">
-              <nav>
+            <nav>
                 <ul class="pagination">
-                  <li class="page-item <?php if ($page <= 1) {
-                        echo 'disabled';
-                 };?>">
-                    <a class="page-link"
-                        href="<?php if ($page <= 1) {
-                           echo '#'; } else { 
-                             echo "?page=" . $prev; } ?>" aria-label="Previous">
+                  <li>
+                    <a href="#" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
-                  <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
-                <li class="page-item <?php if ($page == $i) {
-                  echo 'active'; 
-                  } ?>">
-                    <a class="page-link" href="index.php?page=<?php $i; ?>"
-                    > <?php $i;?>
-                    </a>
-                </li>
-                <?php endfor; ?>
-                  <li  class="page-item <?php if ($page >= $totoalPages) {
-                     echo 'disabled'; } ?>">
-                    <a class="page-link"
-                        href="<?php if ($page >= $totoalPages) {
-                           echo '#'; } else {
-                             echo "?page=". $next; } ?>" aria-label="Next">
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">4</a></li>
+                  <li><a href="#">5</a></li>
+                  <li>
+                    <a href="#" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -659,15 +607,6 @@ $r=mysqli_query($con, $sql);
             </div>
           </div>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#records-limit').change(function () {
-            $('form').submit();
-        })
-    });
-</script>
         <div class="col-lg-3 col-md-3 col-sm-4 col-md-pull-9">
           <aside class="aa-sidebar">
             <!-- single sidebar -->
@@ -727,14 +666,13 @@ $r=mysqli_query($con, $sql);
                 <?php  $sql='SELECT * FROM col';
                    $r=mysqli_query($con, $sql);
                 while ($row=mysqli_fetch_array($r)) { ?>
-                <a href="product.php?colid=
-                <?php echo $row["col_id"]?>">
-                <input type="color" value=
+                <a href="product.php?colid=<?php echo $row["col_id"]?>">
+                <input type="color"  value=
                 "<?php echo $row['colname'];?>"
                 style="border:none;width:50px;"disabled>
                 </a>         
                     <?php 
-    }
+                }
                         ?>
               </div>                            
             </div>

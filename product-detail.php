@@ -141,6 +141,7 @@
                 </a>
                 <div class="aa-cartbox-summary">
                   <ul>
+                  
                     <li>
                       <a class="aa-cartbox-img" href="#"><img src="img/woman-small-2.jpg" alt="img"></a>
                       <div class="aa-cartbox-info">
@@ -343,6 +344,13 @@
       <div class="row">
         <div class="col-md-12">
           <div class="aa-product-details-area">
+          <?php $id=$_REQUEST['id'];
+                  require 'config.php';
+                  $r=$con->query("SELECT *FROM product WHERE `id`=$id");
+                  while($row=mysqli_fetch_assoc($r))
+                  {
+                    
+                  ?>
             <div class="aa-product-details-content">
               <div class="row">
                 <!-- Modal view slider -->
@@ -350,18 +358,9 @@
                   <div class="aa-product-view-slider">                                
                     <div id="demo-1" class="simpleLens-gallery-container">
                       <div class="simpleLens-container">
-                        <div class="simpleLens-big-image-container"><a data-lens-image="img/view-slider/large/polo-shirt-1.png" class="simpleLens-lens-image"><img src="img/view-slider/medium/polo-shirt-1.png" class="simpleLens-big-image"></a></div>
-                      </div>
-                      <div class="simpleLens-thumbnails-container">
-                          <a data-big-image="img/view-slider/medium/polo-shirt-1.png" data-lens-image="img/view-slider/large/polo-shirt-1.png" class="simpleLens-thumbnail-wrapper" href="#">
-                            <img src="img/view-slider/thumbnail/polo-shirt-1.png">
-                          </a>                                    
-                          <a data-big-image="img/view-slider/medium/polo-shirt-3.png" data-lens-image="img/view-slider/large/polo-shirt-3.png" class="simpleLens-thumbnail-wrapper" href="#">
-                            <img src="img/view-slider/thumbnail/polo-shirt-3.png">
-                          </a>
-                          <a data-big-image="img/view-slider/medium/polo-shirt-4.png" data-lens-image="img/view-slider/large/polo-shirt-4.png" class="simpleLens-thumbnail-wrapper" href="#">
-                            <img src="img/view-slider/thumbnail/polo-shirt-4.png">
-                          </a>
+                        <div class="simpleLens-big-image-container"><a data-lens-image="img/view-slider/large/polo-shirt-1.png" class="simpleLens-lens-image"> <?php echo'<img style="height:300px;width:250px;"
+                    src="SimplaAdmin/productimg/' . $row['img'] . '"class="simpleLens-lens-image">' ?></a></div>
+                      
                       </div>
                     </div>
                   </div>
@@ -369,9 +368,9 @@
                 <!-- Modal view content -->
                 <div class="col-md-7 col-sm-7 col-xs-12">
                   <div class="aa-product-view-content">
-                    <h3>T-Shirt</h3>
+                    <h3> <?php echo $row['name']?></h3>
                     <div class="aa-price-block">
-                      <span class="aa-product-view-price">$34.99</span>
+                      <span class="aa-product-view-price">$ <?php echo $row['price']?></span>
                       <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis animi, veritatis quae repudiandae quod nulla porro quidem, itaque quis quaerat!</p>
@@ -384,12 +383,19 @@
                     </div>
                     <h4>Color</h4>
                     <div class="aa-color-tag">
-                      <a href="#" class="aa-color-green"></a>
-                      <a href="#" class="aa-color-yellow"></a>
-                      <a href="#" class="aa-color-pink"></a>                      
-                      <a href="#" class="aa-color-black"></a>
-                      <a href="#" class="aa-color-white"></a>                      
-                    </div>
+                    <?php 
+                   
+                     $sq='SELECT * FROM col where `col_id`="'.$row['col_id'].'"';
+                   $r=mysqli_query($con, $sq);
+                while ($ro=mysqli_fetch_array($r)) { ?>
+                <input type="color"  value=
+                "<?php echo $ro['colname'];?>"
+                style="border:none;width:50px;"disabled>
+                </a>         
+                    <?php 
+                };
+                        ?>
+                        </div>
                     <div class="aa-prod-quantity">
                       <form action="">
                         <select id="" name="">
@@ -414,6 +420,8 @@
                 </div>
               </div>
             </div>
+            <?php };
+                      ?>
             <div class="aa-product-details-bottom">
               <ul class="nav nav-tabs" id="myTab2">
                 <li><a href="#description" data-toggle="tab">Description</a></li>
