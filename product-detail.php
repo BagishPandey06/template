@@ -79,11 +79,15 @@ require 'header.php';
                         </select>
                       </form>
                       <p class="aa-prod-category">
-                        Category: <a href="#">Polo T-Shirt</a>
+                        Category:  <?php
+              $sql='select * from categorie where `catid`="'.$row['catid'].'"';
+              $r=mysqli_query($con, $sql);
+            while ($row=mysqli_fetch_array($r)) { 
+            ?><a href="#"><?php echo $row["catname"];?></a><? };?>
                       </p>
                     </div>
                     <div class="aa-prod-view-bottom">
-                      <a class="aa-add-to-cart-btn" href="#">Add To Cart</a>
+                      <a class="aa-add-to-cart-btn" href="">Add To Cart</a>
                       <a class="aa-add-to-cart-btn" href="#">Wishlist</a>
                       <a class="aa-add-to-cart-btn" href="#">Compare</a>
                     </div>
